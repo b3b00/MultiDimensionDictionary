@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading;
+using multiDimensionalDictionary;
 
-namespace ExpirationalMultiDimensionalDictionary
+namespace consoleTests
 {
     class Program
     {
@@ -43,7 +44,7 @@ namespace ExpirationalMultiDimensionalDictionary
 
         private static void Test1b()
         {
-            var dic = new MultiDimensionalDictionary<string, string>(TimeSpan.FromSeconds(1));
+            var dic = new ExpirationalMultiDimensionalDictionary<string, string>(TimeSpan.FromSeconds(1));
             ;
             dic.Put("x", "y");
             AssertTrue(dic.ContainsKey("x"),"(1) {0} found before expiracy",1);
@@ -54,7 +55,7 @@ namespace ExpirationalMultiDimensionalDictionary
 
         private static void Test1()
         {
-            var dic = new MultiDimensionalDictionary<string, string>(TimeSpan.FromSeconds(3));
+            var dic = new ExpirationalMultiDimensionalDictionary<string, string>(TimeSpan.FromSeconds(3));
             dic.Put("x", "y");
             var c = dic.ContainsKey("x");
             if (c)
@@ -87,7 +88,7 @@ namespace ExpirationalMultiDimensionalDictionary
         
         private static void Test2b()
         {
-            var dic2 = new MultiDimensionalDictionary<string, string, string>(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(2));
+            var dic2 = new ExpirationalMultiDimensionalDictionary<string, string, string>(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(2));
 
             dic2.Put("w","x", "y");
             var c = dic2.ContainsKey("w", "x");
@@ -106,7 +107,7 @@ namespace ExpirationalMultiDimensionalDictionary
         
          private static void Test3b()
         {
-            var dic3 = new MultiDimensionalDictionary<string, string, string,string>(TimeSpan.FromSeconds(8),
+            var dic3 = new ExpirationalMultiDimensionalDictionary<string, string, string,string>(TimeSpan.FromSeconds(8),
                 TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(2));
 
             dic3.Put("w","x", "y", "z");

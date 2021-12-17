@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExpirationalMultiDimensionalDictionary
+namespace multiDimensionalDictionary
 {
 
 public static class DictionaryAssertions
@@ -18,13 +18,13 @@ public static class DictionaryAssertions
 
     }
 
-    public class MultiDimensionalDictionary<K1, V>
+    public class ExpirationalMultiDimensionalDictionary<K1, V>
     {
 
         private TimeSpan ExpirationSpan;
         protected ConcurrentDictionary<K1, (DateTime date,V value)> Data { get; set; }
 
-        public MultiDimensionalDictionary(TimeSpan expirationSpan)
+        public ExpirationalMultiDimensionalDictionary(TimeSpan expirationSpan)
         {
             ExpirationSpan = expirationSpan;
             Data = new ConcurrentDictionary<K1, (DateTime,V)>();
@@ -99,18 +99,18 @@ public static class DictionaryAssertions
 
 
 
-    public class MultiDimensionalDictionary<K1, K2, V>
+    public class ExpirationalMultiDimensionalDictionary<K1, K2, V>
     {
-        protected ConcurrentDictionary<K1, (DateTime date, MultiDimensionalDictionary<K2, V> subData)> Data { get; set; }
+        protected ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionalDictionary<K2, V> subData)> Data { get; set; }
 
         TimeSpan ExpirationSpan1;
         TimeSpan ExpirationSpan2;
         
-        public MultiDimensionalDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2)
+        public ExpirationalMultiDimensionalDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2)
         {
             ExpirationSpan1 = expirationSpan1;
             ExpirationSpan2 = expirationSpan2;
-            Data = new ConcurrentDictionary<K1, (DateTime date, MultiDimensionalDictionary<K2, V> subData)>();
+            Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionalDictionary<K2, V> subData)>();
         }
 
         public void Invalidate()
@@ -173,7 +173,7 @@ public static class DictionaryAssertions
 
             DictionaryAssertions.AssertNotNull<V>(value, "value");
 
-            MultiDimensionalDictionary<K2, V> secondDimentionData = new MultiDimensionalDictionary<K2, V>(ExpirationSpan2);
+            ExpirationalMultiDimensionalDictionary<K2, V> secondDimentionData = new ExpirationalMultiDimensionalDictionary<K2, V>(ExpirationSpan2);
 
 
 
@@ -194,7 +194,7 @@ public static class DictionaryAssertions
             Data[k1] = (DateTime.Now, secondDimentionData);
         }
 
-        public MultiDimensionalDictionary<K2, V> Get(K1 k1)
+        public ExpirationalMultiDimensionalDictionary<K2, V> Get(K1 k1)
         {
             Invalidate();
             return Data[k1].subData;
@@ -208,7 +208,7 @@ public static class DictionaryAssertions
             DictionaryAssertions.AssertNotNull<K2>(k2, "k2");
 
             V value = default(V);
-            (DateTime date, MultiDimensionalDictionary<K2, V> subData) secondDimensionData = default;
+            (DateTime date, ExpirationalMultiDimensionalDictionary<K2, V> subData) secondDimensionData = default;
             if (Data.TryGetValue(k1, out secondDimensionData))
             {
 
@@ -230,7 +230,7 @@ public static class DictionaryAssertions
 
         public void _Remove(K1 k1)
         {
-            (DateTime date, MultiDimensionalDictionary<K2, V> subData) ignore = default;
+            (DateTime date, ExpirationalMultiDimensionalDictionary<K2, V> subData) ignore = default;
             Data.TryRemove(k1, out ignore);
         }
 
@@ -246,21 +246,21 @@ public static class DictionaryAssertions
         }
     }
 
-    public class MultiDimensionalDictionary<K1, K2, K3, V>
+    public class ExpirationalMultiDimensionalDictionary<K1, K2, K3, V>
     {
     
         TimeSpan ExpirationSpan1;
         TimeSpan ExpirationSpan2;
         TimeSpan ExpirationSpan3;
         
-        protected ConcurrentDictionary<K1, (DateTime date, MultiDimensionalDictionary<K2, K3, V> data)> Data { get; set; }
+        protected ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionalDictionary<K2, K3, V> data)> Data { get; set; }
     
-        public MultiDimensionalDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2, TimeSpan expirationSpan3) : base()
+        public ExpirationalMultiDimensionalDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2, TimeSpan expirationSpan3) : base()
         {
             ExpirationSpan1 = expirationSpan1;
             ExpirationSpan2 = expirationSpan2;
             ExpirationSpan3 = expirationSpan3;
-            Data = new ConcurrentDictionary<K1, (DateTime date, MultiDimensionalDictionary<K2, K3, V> data)>();
+            Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionalDictionary<K2, K3, V> data)>();
         }
     
         
@@ -288,7 +288,7 @@ public static class DictionaryAssertions
         
         public void _Remove(K1 k1)
         {
-            (DateTime date, MultiDimensionalDictionary<K2, K3, V> data) ignore;
+            (DateTime date, ExpirationalMultiDimensionalDictionary<K2, K3, V> data) ignore;
             Data.TryRemove(k1, out ignore);
         }
 
@@ -337,7 +337,7 @@ public static class DictionaryAssertions
     
             DictionaryAssertions.AssertNotNull<V>(value, "value");
     
-            var secondDimentionData = new MultiDimensionalDictionary<K2, K3, V>(ExpirationSpan2,ExpirationSpan3);
+            var secondDimentionData = new ExpirationalMultiDimensionalDictionary<K2, K3, V>(ExpirationSpan2,ExpirationSpan3);
     
     
     
@@ -351,13 +351,13 @@ public static class DictionaryAssertions
             Data[k1] = (DateTime.Now, secondDimentionData);
         }
     
-        public MultiDimensionalDictionary<K2, K3, V> Get(K1 k1)
+        public ExpirationalMultiDimensionalDictionary<K2, K3, V> Get(K1 k1)
         {
             Invalidate();
             return Data[k1].data;
         }
     
-        public MultiDimensionalDictionary<K3, V> Get(K1 k1, K2 k2)
+        public ExpirationalMultiDimensionalDictionary<K3, V> Get(K1 k1, K2 k2)
         {
             Invalidate();
             return Data[k1].data.Get(k2);
@@ -374,7 +374,7 @@ public static class DictionaryAssertions
     
     
             V value = default(V);
-            (DateTime date, MultiDimensionalDictionary<K2, K3, V> data) secondDimensionData;
+            (DateTime date, ExpirationalMultiDimensionalDictionary<K2, K3, V> data) secondDimensionData;
             if (Data.TryGetValue(k1, out secondDimensionData))
             {
                 return secondDimensionData.data.Get(k2, k3);
@@ -406,18 +406,18 @@ public static class DictionaryAssertions
         }
     }
 
-    public class MultiDimensionalDictionary<K1, K2, K3, K4, V> : MultiDimensionalDictionary<K1, K2, MultiDimensionalDictionary<K3, K4, V>>
+    public class ExpirationalMultiDimensionalDictionary<K1, K2, K3, K4, V> : ExpirationalMultiDimensionalDictionary<K1, K2, ExpirationalMultiDimensionalDictionary<K3, K4, V>>
     {
-        protected new ConcurrentDictionary<K1, (DateTime date, MultiDimensionalDictionary<K2, K3, K4, V> data)>  Data { get; set; }
+        protected new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionalDictionary<K2, K3, K4, V> data)>  Data { get; set; }
     
         TimeSpan ExpirationSpan1;
         TimeSpan ExpirationSpan2;
         TimeSpan ExpirationSpan3;
         TimeSpan ExpirationSpan4;
         
-        public MultiDimensionalDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2, TimeSpan expirationSpan3, TimeSpan expirationSpan4) : base(expirationSpan1, expirationSpan2)
+        public ExpirationalMultiDimensionalDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2, TimeSpan expirationSpan3, TimeSpan expirationSpan4) : base(expirationSpan1, expirationSpan2)
         {
-            Data = new ConcurrentDictionary<K1, (DateTime date, MultiDimensionalDictionary<K2, K3, K4, V> data)>();
+            Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionalDictionary<K2, K3, K4, V> data)>();
         }
     
         // public new bool ContainsKey(K1 k1) => Data.ContainsKey(k1);
@@ -456,7 +456,7 @@ public static class DictionaryAssertions
     
             DictionaryAssertions.AssertNotNull<V>(value, "value");
     
-            var secondDimentionData = new MultiDimensionalDictionary<K2, K3, K4, V>(ExpirationSpan2,ExpirationSpan3,ExpirationSpan4);
+            var secondDimentionData = new ExpirationalMultiDimensionalDictionary<K2, K3, K4, V>(ExpirationSpan2,ExpirationSpan3,ExpirationSpan4);
     
             if (Data.ContainsKey(k1))
             {
@@ -469,19 +469,19 @@ public static class DictionaryAssertions
         }
     
     
-        public new MultiDimensionalDictionary<K2, K3, K4, V> Get(K1 k1)
+        public new ExpirationalMultiDimensionalDictionary<K2, K3, K4, V> Get(K1 k1)
         {
             Invalidate();
             return Data[k1].data;
         }
     
-        public new MultiDimensionalDictionary<K3, K4, V> Get(K1 k1, K2 k2)
+        public new ExpirationalMultiDimensionalDictionary<K3, K4, V> Get(K1 k1, K2 k2)
         {
             Invalidate();
             return Data[k1].data.Get(k2);
         }
     
-        public MultiDimensionalDictionary<K4, V> Get(K1 k1, K2 k2, K3 k3)
+        public ExpirationalMultiDimensionalDictionary<K4, V> Get(K1 k1, K2 k2, K3 k3)
         {
             Invalidate();
             return Data[k1].data.Get(k2).Get(k3);
@@ -499,7 +499,7 @@ public static class DictionaryAssertions
             DictionaryAssertions.AssertNotNull<K4>(k4, "k4");
     
             V value = default(V);
-            (DateTime date, MultiDimensionalDictionary<K2, K3, K4, V> data) secondDimensionData;
+            (DateTime date, ExpirationalMultiDimensionalDictionary<K2, K3, K4, V> data) secondDimensionData;
             if (Data.TryGetValue(k1, out secondDimensionData))
             {
                 return secondDimensionData.data.Get(k2, k3, k4);
@@ -511,7 +511,7 @@ public static class DictionaryAssertions
         public new void Remove(K1 k1)
         {
             Invalidate();
-            (DateTime , MultiDimensionalDictionary<K2, K3, K4, V>) ignore = (default,default);
+            (DateTime , ExpirationalMultiDimensionalDictionary<K2, K3, K4, V>) ignore = (default,default);
             Data.TryRemove(k1, out ignore);
         }
     
