@@ -1,48 +1,35 @@
-﻿using System;
+using System;
 using System.Threading;
 using multiDimensionalDictionary;
+using Xunit;
 
-namespace consoleTests
+namespace MultiDimensionTests
 {
-    class Program
+    public class ExpirationalMultiDimensionDictionaryTests
     {
-        static void Main(string[] args)
-        {
-            
-             
-             Test1b();
-             Console.WriteLine("\n=========================\n");
-             Test2b();
-             Console.WriteLine("\n=========================\n");
-            Test3b();
-        }
-
-        static void AssertExpiration(bool expected, bool actual, string messagePattern, int errorCode)
+         private void AssertExpiration(bool expected, bool actual, string messagePattern, int errorCode)
         {
             string t = actual ? "" : "not";
-            if (actual == expected)
+            if (actual != expected)
             {
-                Console.WriteLine($"Test #{errorCode} : "+string.Format(messagePattern,t)+" OK");
-            }
-            else
-            {
-                Console.Error.WriteLine(string.Format(messagePattern,t)+" KO");
-                Environment.Exit(errorCode);
+                Assert.True(false,string.Format(messagePattern,t)+" KO");
+                
             }
         }
         
-        static void AssertTrue(bool test, string messagePattern, int errorCode)
+        private void AssertTrue(bool test, string messagePattern, int errorCode)
         {
             AssertExpiration(true,test,messagePattern,errorCode);
         }
         
-        static void AssertFalse(bool test, string messagePattern, int errorCode)
+        private void AssertFalse(bool test, string messagePattern, int errorCode)
         {
             AssertExpiration(false,test,messagePattern,errorCode);
         }
 
 
-        private static void Test1b()
+        [Fact]
+        private void Test1()
         {
             var dic = new ExpirationalMultiDimensionDictionary<string, string>(TimeSpan.FromSeconds(1));
             ;
@@ -50,10 +37,10 @@ namespace consoleTests
             AssertTrue(dic.ContainsKey("x"),"(1) {0} found before expiracy",1);
             Thread.Sleep(1200);
             AssertFalse(dic.ContainsKey("x"),"(1) {0} found after 1 expiracy",1);
-            Console.WriteLine("Test #1 all is fine");
         }
         
-        private static void Test2b()
+        [Fact]
+        private void Test2()
         {
             var dic2 = new ExpirationalMultiDimensionDictionary<string, string, string>(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(2));
 
@@ -68,11 +55,10 @@ namespace consoleTests
             Thread.Sleep(2000);
             AssertFalse(dic2.ContainsKey("w"),"(1) {0} found after 2 expiracy",2);
             
-            Console.WriteLine("Test #2 : all is fine.");
-            
         }
         
-         private static void Test3b()
+        [Fact]
+         public void Test3()
         {
             var dic3 = new ExpirationalMultiDimensionDictionary<string, string, string,string>(TimeSpan.FromSeconds(8),
                 TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(2));
@@ -98,10 +84,6 @@ namespace consoleTests
             // test if (1) absent
             AssertFalse(dic3.ContainsKey("w"),"Test3 (1) {0} found after 1 expiracy",3);
             
-            Console.WriteLine("Test #3 : all is fine.");
-            
         }
-        
-       
     }
 }
