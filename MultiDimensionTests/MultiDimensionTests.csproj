@@ -2,9 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-<version>0.1-alpha</version>
-        <PackageVersion>0.1-alpha</PackageVersion>
-        <IsPackable>false</IsPackable>
+
+        <IsPackable>false</IsPackable>        
     </PropertyGroup>
 
     <ItemGroup>

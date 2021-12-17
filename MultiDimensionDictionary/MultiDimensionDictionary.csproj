@@ -2,6 +2,13 @@
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1</TargetFrameworks>
+        <version>0.1-alpha</version>
+        <PackageVersion>0.1-alpha</PackageVersion>
+        <Authors>b3b00</Authors>
+        <PackageProjectUrl>https://github.com/b3b00/MultiDimensionDictionary</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/b3b00/MultiDimensionDictionary</RepositoryUrl>
+        <Description>multi dimension dictionary with expiration mechanism for cache invalidation</Description>
+        <PackageLicenseUrl>https://github.com/b3b00/sly/blob/master/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
 
 </Project>
