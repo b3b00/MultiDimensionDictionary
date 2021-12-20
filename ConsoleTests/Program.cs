@@ -33,6 +33,8 @@ namespace consoleTests
             }
         }
         
+        
+        
         static void AssertTrue(bool test, string messagePattern, int errorCode)
         {
             AssertExpiration(true,test,messagePattern,errorCode);
@@ -108,26 +110,32 @@ namespace consoleTests
          {
              var dic4 = new ExpirationalMultiDimensionDictionary<string, string, string,string,string>(TimeSpan.FromSeconds(8),
                  TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(1));
-
+              DateTime start = DateTime.Now;  
              dic4.Put("w","x", "y", "z","a");
-             AssertTrue(dic4.ContainsKey("w", "x", "y","z"),"(1,2,3,4) {0} found before expiracy",3);
+             AssertTrue(dic4.ContainsKey("w", "x", "y","z"),"(1,2,3,4) {0} found before 4 expiracy",4);
+             
              Thread.Sleep(2000);
-            
+             Console.WriteLine("============================\nwait 2");
+            Console.WriteLine($"\t elapsed : {DateTime.Now-start} ");
              // test if (1,2,3) still present
-             AssertTrue(dic4.ContainsKey("w","x","y"),"(1,2,3) found after 4 expiracy",3);
+             AssertTrue(dic4.ContainsKey("w","x","y"),"(1,2,3) {0} found after 4 expiracy",4);
             
-             // test if (1,2,3) missing
-             AssertFalse(dic4.ContainsKey("w","x","y","z"),"(1,2,3,4) {0} found after 3 expiracy",3);
-             return;
+             // test if (1,2,3,4) missing
+             AssertFalse(dic4.ContainsKey("w","x","y","z"),"(1,2,3,4) {0} found after 3 expiracy",4);
+             
              Thread.Sleep(2000);
+             Console.WriteLine("============================\nwait 2 more");
+             Console.WriteLine($"\t elapsed : {DateTime.Now-start} ");
              // test if (1) still present
-             AssertTrue(dic4.ContainsKey("w","x"),"(1,2) {0} found after 3 expiracy",3);
+             AssertTrue(dic4.ContainsKey("w","x"),"(1,2) {0} found after 3 expiracy",4);
              // test if (1,2) absent
-             AssertFalse(dic4.ContainsKey("w", "x"),"(1,2,3) {0} found after 3 expiracy",3);
+             AssertFalse(dic4.ContainsKey("w", "x"),"(1,2,3) {0} found after 3 expiracy",4);
             
              Thread.Sleep(3000);
+             Console.WriteLine("============================\nwait 3 more");
+             Console.WriteLine($"\t elapsed : {DateTime.Now-start} ");
              // test if (1) absent
-             AssertFalse(dic4.ContainsKey("w"),"Test3 (1) {0} found after 1 expiracy",3);
+             AssertFalse(dic4.ContainsKey("w"),"(1) {0} found after 1 expiracy",4);
             
              Console.WriteLine("Test #4 : all is fine.");
             

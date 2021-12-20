@@ -26,6 +26,7 @@ namespace multiDimensionalDictionary
                 var age = now - entry.Value.date;
                 if (age > ExpirationSpan)
                 {
+                    Console.WriteLine($"\ninvalidate {entry.Key} from [1] : {age} > {ExpirationSpan}\n");
                     toRemove.Add(entry.Key);
                 }
             }
@@ -109,6 +110,7 @@ namespace multiDimensionalDictionary
                 var age = now - entry.Value.date;
                 if (age > ExpirationSpan1)
                 {
+                    Console.WriteLine($"\ninvalidate {entry.Key} from [2] : {age} > {ExpirationSpan1}\n");
                     toRemove.Add(entry.Key);
                 }
             }
@@ -261,6 +263,7 @@ namespace multiDimensionalDictionary
                 var age = now - entry.Value.date;
                 if (age > ExpirationSpan1)
                 {
+                    Console.WriteLine($"\ninvalidate {entry.Key} from [3] : {age} > {ExpirationSpan1}\n");
                     toRemove.Add(entry.Key);
                 }
             }
@@ -394,7 +397,7 @@ namespace multiDimensionalDictionary
         }
     }
 
-    public class ExpirationalMultiDimensionDictionary<K1, K2, K3, K4, V> : ExpirationalMultiDimensionDictionary<K1, K2, ExpirationalMultiDimensionDictionary<K3, K4, V>>
+    public class ExpirationalMultiDimensionDictionary<K1, K2, K3, K4, V> //: ExpirationalMultiDimensionDictionary<K1, K2, ExpirationalMultiDimensionDictionary<K3, K4, V>>
     {
         protected new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionDictionary<K2, K3, K4, V> data)>  Data { get; set; }
     
@@ -403,23 +406,62 @@ namespace multiDimensionalDictionary
         TimeSpan ExpirationSpan3;
         TimeSpan ExpirationSpan4;
         
-        public ExpirationalMultiDimensionDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2, TimeSpan expirationSpan3, TimeSpan expirationSpan4) : base(expirationSpan1, expirationSpan2)
+        public ExpirationalMultiDimensionDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2, TimeSpan expirationSpan3, TimeSpan expirationSpan4) 
         {
             Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionDictionary<K2, K3, K4, V> data)>();
+            ExpirationSpan1 = expirationSpan1;
+            ExpirationSpan2 = expirationSpan2;
+            ExpirationSpan3 = expirationSpan3;
+            ExpirationSpan4 = expirationSpan4;
         }
     
+        
+        public void Invalidate()
+        {
+            
+            DateTime now = DateTime.Now;
+            List<K1> toRemove = new List<K1>();
+            foreach (var entry in Data)
+            {
+                var age = now - entry.Value.date;
+                if (age > ExpirationSpan1)
+                {
+                    Console.WriteLine($"\ninvalidate {entry.Key} from [4] : {age} > {ExpirationSpan1}\n");
+                    toRemove.Add(entry.Key);
+                }
+            }
+
+            if (toRemove.Any())
+            {
+                foreach (var k1 in toRemove)
+                {
+                    _Remove(k1);
+                }
+            }
+        }
+        
         public new bool ContainsKey(K1 k1) => Data.ContainsKey(k1);
         
         public bool ContainsKey(K1 k1, K2 k2, K3 k3, K4 k4)
         {
             Invalidate();
-            return Data.ContainsKey(k1) && Data[k1].data.ContainsKey(k2, k3, k4);
+            bool containsK1 = Data.ContainsKey(k1);
+            bool containsChildren = Data[k1].data.ContainsKey(k2, k3, k4); 
+            return  containsK1 && containsChildren;
         }
-        
+
         public bool ContainsKey(K1 k1, K2 k2, K3 k3)
         {
             Invalidate();
-            return Data.ContainsKey(k1) && Data[k1].data.ContainsKey(k2, k3);
+            var containsKey = Data.ContainsKey(k1);
+            var containsChildren = Data[k1].data.ContainsKey(k2, k3);
+            return containsKey && containsChildren;
+        }
+
+        public bool ContainsKey(K1 k1, K2 k2)
+        {
+            Invalidate();
+            return Data.ContainsKey(k1) && Data[k1].data.ContainsKey(k2);
         }
     
     
@@ -506,7 +548,12 @@ namespace multiDimensionalDictionary
         public new void Remove(K1 k1)
         {
             Invalidate();
-            (DateTime , ExpirationalMultiDimensionDictionary<K2, K3, K4, V>) ignore = (default,default);
+            _Remove(k1);
+        }
+        
+        public void _Remove(K1 k1)
+        {
+            (DateTime date, ExpirationalMultiDimensionDictionary<K2,K3,K4, V> subData) ignore = default;
             Data.TryRemove(k1, out ignore);
         }
     
