@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1</TargetFrameworks>
-        <version>0.2-alpha</version>
-        <PackageVersion>0.2-alpha</PackageVersion>
+        <version>0.9-beta</version>
+        <PackageVersion>0.9-beta</PackageVersion>
         <Authors>b3b00</Authors>
         <PackageProjectUrl>https://github.com/b3b00/MultiDimensionDictionary</PackageProjectUrl>
         <RepositoryUrl>https://github.com/b3b00/MultiDimensionDictionary</RepositoryUrl>
