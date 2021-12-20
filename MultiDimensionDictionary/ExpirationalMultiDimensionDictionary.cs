@@ -134,6 +134,7 @@ namespace multiDimensionalDictionary
             Invalidate();
             return Data.ContainsKey(k1) && Data[k1].subData.ContainsKey(k2);
         }
+        
 
         public List<(K1, K2)> GetKeys()
         {
@@ -407,12 +408,19 @@ namespace multiDimensionalDictionary
             Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionDictionary<K2, K3, K4, V> data)>();
         }
     
-        // public new bool ContainsKey(K1 k1) => Data.ContainsKey(k1);
-        //
-        // public bool ContainsKey(K1 k1, K2 k2, K3 k3, K4 k4)
-        // {
-        //     return Data.ContainsKey(k1) && Data[k1].data.ContainsKey(k2, k3, k4);
-        // }
+        public new bool ContainsKey(K1 k1) => Data.ContainsKey(k1);
+        
+        public bool ContainsKey(K1 k1, K2 k2, K3 k3, K4 k4)
+        {
+            Invalidate();
+            return Data.ContainsKey(k1) && Data[k1].data.ContainsKey(k2, k3, k4);
+        }
+        
+        public bool ContainsKey(K1 k1, K2 k2, K3 k3)
+        {
+            Invalidate();
+            return Data.ContainsKey(k1) && Data[k1].data.ContainsKey(k2, k3);
+        }
     
     
         public new List<(K1, K2, K3, K4)> GetKeys()

@@ -10,11 +10,13 @@ namespace consoleTests
         {
             
              
-             Test1b();
-             Console.WriteLine("\n=========================\n");
-             Test2b();
-             Console.WriteLine("\n=========================\n");
-            Test3b();
+            //  Test1b();
+            //  Console.WriteLine("\n=========================\n");
+            //  Test2b();
+            //  Console.WriteLine("\n=========================\n");
+            // Test3b();
+            Console.WriteLine("\n=========================\n");
+            Test4b();
         }
 
         static void AssertExpiration(bool expected, bool actual, string messagePattern, int errorCode)
@@ -101,6 +103,35 @@ namespace consoleTests
             Console.WriteLine("Test #3 : all is fine.");
             
         }
+         
+         private static void Test4b()
+         {
+             var dic4 = new ExpirationalMultiDimensionDictionary<string, string, string,string,string>(TimeSpan.FromSeconds(8),
+                 TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(1));
+
+             dic4.Put("w","x", "y", "z","a");
+             AssertTrue(dic4.ContainsKey("w", "x", "y","z"),"(1,2,3,4) {0} found before expiracy",3);
+             Thread.Sleep(2000);
+            
+             // test if (1,2,3) still present
+             AssertTrue(dic4.ContainsKey("w","x","y"),"(1,2,3) found after 4 expiracy",3);
+            
+             // test if (1,2,3) missing
+             AssertFalse(dic4.ContainsKey("w","x","y","z"),"(1,2,3,4) {0} found after 3 expiracy",3);
+             return;
+             Thread.Sleep(2000);
+             // test if (1) still present
+             AssertTrue(dic4.ContainsKey("w","x"),"(1,2) {0} found after 3 expiracy",3);
+             // test if (1,2) absent
+             AssertFalse(dic4.ContainsKey("w", "x"),"(1,2,3) {0} found after 3 expiracy",3);
+            
+             Thread.Sleep(3000);
+             // test if (1) absent
+             AssertFalse(dic4.ContainsKey("w"),"Test3 (1) {0} found after 1 expiracy",3);
+            
+             Console.WriteLine("Test #4 : all is fine.");
+            
+         }
         
        
     }
