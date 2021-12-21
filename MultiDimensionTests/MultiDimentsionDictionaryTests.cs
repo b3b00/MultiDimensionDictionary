@@ -6,6 +6,30 @@ namespace MultiDimensionTests
 {
     public class MultiDimentsionDictionaryTests
     {
+
+[Fact]
+static void Test1() {
+    MultiDimensionalDictionary<int,string> oneDimDic = new MultiDimensionalDictionary<int, string>();
+   
+
+            for (int i = 0; i < 5; i++)
+            {
+                    oneDimDic.Put(i, $"{i}");
+            }
+
+
+            for (int i = 0; i < 10; i++)
+            {
+                Random rnd = new Random();
+                int d1 = rnd.Next(0, 4);
+                var v = oneDimDic.Get(d1);
+                Assert.Equal($"{d1}",v);
+            }
+
+            var keys = oneDimDic.GetKeys();
+            Assert.Equal<int>(5,keys.Count);
+}
+
         [Fact]
         static void Test2()
         {
