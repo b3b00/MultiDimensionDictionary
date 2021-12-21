@@ -11,6 +11,8 @@ on:
       - dev
 permissions:
   pull-requests: write
+  packages: write
+  contents: write
 jobs:  
   build:
     env:
@@ -70,7 +72,7 @@ jobs:
           NUGET_KEY: ${{secrets.NUGET_KEY}}
           VERSION_FILE_PATH: ${{env.MAIN_CSPROJ}}
     - name: Create Release
-      if: ${{ success() && matrix.os == 'windows-latest' && steps.publish_nuget.outputs.VERSION != ''  && steps.publish_nuget.outputs.VERSION != null }}
+      if: ${{ success() && matrix.os == 'windows-latest' && steps.publish_nuget.outputs.VERSION != ''  && steps.publish_nuget.outputs.VERSION != null && github.event_name != 'pull_request'}}
       id: create_release
       uses: actions/create-release@latest
       env:
