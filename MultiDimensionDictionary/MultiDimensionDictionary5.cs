@@ -16,7 +16,6 @@ namespace multiDimensionalDictionary
 
         public new bool ContainsKey(K1 k1) => Data.ContainsKey(k1);
 
-
         public bool ContainsKey(K1 k1, K2 k2, K3 k3, K4 k4, K5 k5) => Data.ContainsKey(k1) && Data[k1].ContainsKey(k2, k3, k4, k5);
 
         public new List<(K1, K2, K3, K4, K5)> GetKeys()
@@ -54,12 +53,10 @@ namespace multiDimensionalDictionary
                 secondDimentionData = Data[k1];
             }
 
-            secondDimentionData.Put(k2, k3, k4, k5, value); ;
+            secondDimentionData.Put(k2, k3, k4, k5, value);
 
             Data[k1] = secondDimentionData;
         }
-
-
 
         public new MultiDimensionalDictionary<K2, K3, K4, K5, V> Get(K1 k1)
         {
@@ -106,7 +103,7 @@ namespace multiDimensionalDictionary
             Data.Remove(k1, out MultiDimensionalDictionary<K2, K3, K4, K5, V> ignore);
         }
 
-        public void Remove(K1 k1, K2 k2)
+        public new void Remove(K1 k1, K2 k2)
         {
             Data[k1].Remove(k2);
         }
@@ -126,10 +123,9 @@ namespace multiDimensionalDictionary
             Data[k1].Get(k2).Get(k3).Get(k4).Remove(k5);
         }
 
-        public void Clear()
+        public new void Clear()
         {
             Data.Clear();
         }
-
     }
 }

@@ -428,7 +428,7 @@ namespace multiDimensionalDictionary
             }
         }
 
-        public new bool ContainsKey(K1 k1)
+        public bool ContainsKey(K1 k1)
         {
             Invalidate();
           return Data.ContainsKey(k1);  

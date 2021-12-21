@@ -89,11 +89,10 @@ namespace multiDimensionalDictionary
 
         public new void Remove(K1 k1)
         {
-            MultiDimensionalDictionary<K2, K3, K4, V> ignore = null;
-            Data.Remove(k1, out ignore);
+            Data.Remove(k1, out MultiDimensionalDictionary<K2, K3, K4, V> ignore);
         }
 
-        public void Remove(K1 k1, K2 k2)
+        public new void Remove(K1 k1, K2 k2)
         {
             Data[k1].Remove(k2);
         }
@@ -108,7 +107,7 @@ namespace multiDimensionalDictionary
             Data[k1].Get(k2).Get(k3).Remove(k4);
         }
 
-        public void Clear()
+        public new void Clear()
         {
             Data.Clear();
         }
