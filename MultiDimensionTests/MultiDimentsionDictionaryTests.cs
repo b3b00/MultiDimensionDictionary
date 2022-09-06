@@ -7,15 +7,15 @@ namespace MultiDimensionTests
 {
     public class MultiDimentsionDictionaryTests
     {
+        [Fact]
+        static void Test1()
+        {
+            MultiDimensionalDictionary<int, string> oneDimDic = new MultiDimensionalDictionary<int, string>();
 
-[Fact]
-static void Test1() {
-    MultiDimensionalDictionary<int,string> oneDimDic = new MultiDimensionalDictionary<int, string>();
-   
 
             for (int i = 0; i < 5; i++)
             {
-                    oneDimDic.Put(i, $"{i}");
+                oneDimDic.Put(i, $"{i}");
             }
 
 
@@ -29,8 +29,7 @@ static void Test1() {
 
             var keys = oneDimDic.GetKeys();
             Check.That(keys).CountIs(5);
-            
-}
+        }
 
         [Fact]
         static void Test2()
@@ -63,7 +62,8 @@ static void Test1() {
         [Fact]
         static void Test3()
         {
-            MultiDimensionalDictionary<int, int, int, string> threeDimDic = new MultiDimensionalDictionary<int, int, int, string>();
+            MultiDimensionalDictionary<int, int, int, string> threeDimDic =
+                new MultiDimensionalDictionary<int, int, int, string>();
 
 
             for (int i = 0; i < 5; i++)
@@ -95,7 +95,8 @@ static void Test1() {
         [Fact]
         static void Test4()
         {
-            MultiDimensionalDictionary<int, int, int, int, string> fourDimDic = new MultiDimensionalDictionary<int, int, int, int, string>();
+            MultiDimensionalDictionary<int, int, int, int, string> fourDimDic =
+                new MultiDimensionalDictionary<int, int, int, int, string>();
 
             for (int i = 0; i < 5; i++)
             {
@@ -108,7 +109,6 @@ static void Test1() {
                             fourDimDic.Put(i, j, k, l, $"{i}.{j}.{k}.{l}");
                         }
                     }
-
                 }
             }
 
@@ -126,15 +126,13 @@ static void Test1() {
 
             var keys = fourDimDic.GetKeys();
             Check.That(keys).CountIs(625);
-
-
-
         }
 
         [Fact]
         static void Test5()
         {
-            MultiDimensionalDictionary<int, int, int, int, int, string> fiveDimDic = new MultiDimensionalDictionary<int, int, int, int, int, string>();
+            MultiDimensionalDictionary<int, int, int, int, int, string> fiveDimDic =
+                new MultiDimensionalDictionary<int, int, int, int, int, string>();
 
             for (int i = 0; i < 5; i++)
             {
@@ -150,11 +148,8 @@ static void Test1() {
                             }
                         }
                     }
-
                 }
             }
-
-
 
 
             for (int i = 0; i < 10; i++)
@@ -171,6 +166,74 @@ static void Test1() {
 
             var keys = fiveDimDic.GetKeys();
             Check.That(keys).CountIs(3125);
+        }
+
+        [Fact]
+        static void Test1Remove()
+        {
+            MultiDimensionalDictionary<int, string> oneDimDic = new MultiDimensionalDictionary<int, string>();
+
+            oneDimDic.Put(1, "1");
+            Check.That(oneDimDic).ContainsKey(1);
+
+            oneDimDic.Remove(1);
+
+            Check.That(oneDimDic).Not.ContainsKey(1);
+        }
+
+        [Fact]
+        static void Test2Remove()
+        {
+            MultiDimensionalDictionary<int, int, string> twoDimDic = new MultiDimensionalDictionary<int, int, string>();
+
+            twoDimDic.Put(1, 2, "2");
+            Check.That(twoDimDic).ContainsKey(1, 2);
+
+            twoDimDic.Remove(1);
+
+            Check.That(twoDimDic).Not.ContainsKey(1, 2);
+        }
+
+        [Fact]
+        static void Test3Remove()
+        {
+            MultiDimensionalDictionary<int, int, int, string> threeDimDic =
+                new MultiDimensionalDictionary<int, int, int, string>();
+
+            threeDimDic.Put(1, 2, 3, "3");
+            Check.That(threeDimDic).ContainsKey(1, 2, 3);
+
+            threeDimDic.Remove(1, 2, 3);
+
+            Check.That(threeDimDic).Not.ContainsKey(1, 2, 3);
+        }
+
+        [Fact]
+        static void Test4Remove()
+        {
+            MultiDimensionalDictionary<int, int, int, int, string> fourDimDic =
+                new MultiDimensionalDictionary<int, int, int, int, string>();
+
+            fourDimDic.Put(1, 2, 3, 4, "4");
+            Check.That(fourDimDic).ContainsKey(1, 2, 3, 4);
+
+            fourDimDic.Remove(1, 2, 3, 4);
+
+            Check.That(fourDimDic).Not.ContainsKey(1, 2, 3, 4);
+        }
+
+        [Fact]
+        static void Test5Remove()
+        {
+            MultiDimensionalDictionary<int, int, int, int, int, string> fiveDimDic =
+                new MultiDimensionalDictionary<int, int, int, int, int, string>();
+
+            fiveDimDic.Put(1, 2, 3, 4, 5, "5");
+            Check.That(fiveDimDic).ContainsKey(1, 2, 3, 4, 5);
+
+            fiveDimDic.Remove(1, 2, 3, 4, 5);
+
+            Check.That(fiveDimDic).Not.ContainsKey(1, 2, 3, 4, 5);
         }
     }
 }

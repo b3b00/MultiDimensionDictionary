@@ -112,8 +112,8 @@ namespace MultiDimensionTests
          public void Test5()
          {
              var dic5 = new ExpirationalMultiDimensionDictionary<string, string, string, string, string, string>(
-                 TimeSpan.FromSeconds(9), TimeSpan.FromSeconds(7),
-                 TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(1));
+                 9000, 7000,
+                 5000, 3000, 1000);
              dic5.Put("v", "w", "x", "y", "z", "a");
              AssertTrue(dic5.ContainsKey("v", "w", "x", "y", "z"), "(v,w,x,y,z) {0} found before 5 expiracy", 5);
 
@@ -136,5 +136,7 @@ namespace MultiDimensionTests
              Thread.Sleep(2000);
              AssertFalse(dic5.ContainsKey("v"), "(v) {0} found after 1 expiracy", 5);
          }
+         
+         
     }
 }

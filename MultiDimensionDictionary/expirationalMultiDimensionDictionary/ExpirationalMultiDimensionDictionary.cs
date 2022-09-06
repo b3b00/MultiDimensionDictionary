@@ -11,6 +11,11 @@ namespace multiDimensionalDictionary
         private TimeSpan ExpirationSpan;
         protected ConcurrentDictionary<K1, (DateTime date,V value)> Data { get; set; }
 
+        
+        public ExpirationalMultiDimensionDictionary(long expiration1MMillis) : this (TimeSpan.FromMilliseconds(expiration1MMillis))
+        {
+            
+        }
         public ExpirationalMultiDimensionDictionary(TimeSpan expirationSpan)
         {
             ExpirationSpan = expirationSpan;

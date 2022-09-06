@@ -21,7 +21,12 @@ namespace multiDimensionalDictionary
             ExpirationSpan3 = expirationSpan3;
             Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionDictionary<K2, K3, V> data)>();
         }
-    
+
+        public ExpirationalMultiDimensionDictionary(long expiration1MMillis, long expiration2Millis,
+            long expiration3Millis) : this (TimeSpan.FromMilliseconds(expiration1MMillis), TimeSpan.FromMilliseconds(expiration2Millis), TimeSpan.FromMilliseconds(expiration3Millis))
+        {
+            
+        }
         
         public void Invalidate()
         {

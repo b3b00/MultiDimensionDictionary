@@ -12,6 +12,11 @@ namespace multiDimensionalDictionary
         TimeSpan ExpirationSpan1;
         TimeSpan ExpirationSpan2;
         
+        public ExpirationalMultiDimensionDictionary(long expiration1MMillis, long expiration2Millis) : this (TimeSpan.FromMilliseconds(expiration1MMillis), TimeSpan.FromMilliseconds(expiration2Millis))
+        {
+            
+        }
+        
         public ExpirationalMultiDimensionDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2)
         {
             ExpirationSpan1 = expirationSpan1;

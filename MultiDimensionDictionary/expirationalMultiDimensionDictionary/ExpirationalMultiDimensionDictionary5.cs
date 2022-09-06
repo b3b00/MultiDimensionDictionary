@@ -14,6 +14,12 @@ namespace multiDimensionalDictionary
         TimeSpan ExpirationSpan4;
         TimeSpan ExpirationSpan5;
         
+        public ExpirationalMultiDimensionDictionary(long expiration1MMillis, long expiration2Millis,
+            long expiration3Millis, long expieration4Millis, long expiration5Millis) : this (TimeSpan.FromMilliseconds(expiration1MMillis), TimeSpan.FromMilliseconds(expiration2Millis), TimeSpan.FromMilliseconds(expiration3Millis), TimeSpan.FromMilliseconds(expieration4Millis), TimeSpan.FromMilliseconds(expiration5Millis))
+        {
+            
+        }
+        
         public ExpirationalMultiDimensionDictionary(TimeSpan expirationSpan1, TimeSpan expirationSpan2, TimeSpan expirationSpan3, TimeSpan expirationSpan4, TimeSpan expirationSpan5) 
         {
             Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionDictionary<K2, K3, K4, K5, V> data)>();
