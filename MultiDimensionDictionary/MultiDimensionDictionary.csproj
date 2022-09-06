@@ -2,13 +2,23 @@
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1</TargetFrameworks>
-        <version>1.0.0.1</version>
-        <PackageVersion>1.0.0.1</PackageVersion>
+        <version>1.0.0.2</version>
+        <PackageVersion>1.0.0.2</PackageVersion>
         <Authors>b3b00</Authors>
         <PackageProjectUrl>https://github.com/b3b00/MultiDimensionDictionary</PackageProjectUrl>
         <RepositoryUrl>https://github.com/b3b00/MultiDimensionDictionary</RepositoryUrl>
         <Description>multi dimension dictionary with expiration mechanism for cache invalidation</Description>
         <PackageLicenseUrl>https://github.com/b3b00/sly/blob/master/LICENSE</PackageLicenseUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
+    <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    </ItemGroup>
 
 </Project>
