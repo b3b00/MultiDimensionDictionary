@@ -1,5 +1,6 @@
 using System;
 using multiDimensionalDictionary;
+using NFluent;
 using Xunit;
 
 namespace MultiDimensionTests
@@ -23,11 +24,12 @@ static void Test1() {
                 Random rnd = new Random();
                 int d1 = rnd.Next(0, 4);
                 var v = oneDimDic.Get(d1);
-                Assert.Equal($"{d1}",v);
+                Check.That(v).IsEqualTo(d1.ToString());
             }
 
             var keys = oneDimDic.GetKeys();
-            Assert.Equal<int>(5,keys.Count);
+            Check.That(keys).CountIs(5);
+            
 }
 
         [Fact]
@@ -51,12 +53,11 @@ static void Test1() {
                 int d1 = rnd.Next(0, 4);
                 int d2 = rnd.Next(0, 4);
                 var v = twoDimDic.Get(d1, d2);
-                Assert.Equal($"{d1}.{d2}",v);
+                Check.That(v).IsEqualTo($"{d1}.{d2}");
             }
 
             var keys = twoDimDic.GetKeys();
-            Assert.Equal<int>(25,keys.Count);
-
+            Check.That(keys).CountIs(25);
         }
 
         [Fact]
@@ -84,11 +85,11 @@ static void Test1() {
                 int d2 = rnd.Next(0, 4);
                 int d3 = rnd.Next(0, 4);
                 var v = threeDimDic.Get(d1, d2, d3);
-                Assert.Equal($"{d1}.{d2}.{d3}", v);
+                Check.That(v).IsEqualTo($"{d1}.{d2}.{d3}");
             }
 
             var keys = threeDimDic.GetKeys();
-            Assert.Equal<int>(125,keys.Count);
+            Check.That(keys).CountIs(125);
         }
 
         [Fact]
@@ -120,11 +121,11 @@ static void Test1() {
                 int d3 = rnd.Next(0, 4);
                 int d4 = rnd.Next(0, 4);
                 var v = fourDimDic.Get(d1, d2, d3, d4);
-                Assert.Equal($"{d1}.{d2}.{d3}.{d4}",v);
+                Check.That(v).IsEqualTo($"{d1}.{d2}.{d3}.{d4}");
             }
 
             var keys = fourDimDic.GetKeys();
-            Assert.Equal<int>(625, keys.Count);
+            Check.That(keys).CountIs(625);
 
 
 
@@ -165,11 +166,11 @@ static void Test1() {
                 int d4 = rnd.Next(0, 4);
                 int d5 = rnd.Next(0, 4);
                 var v = fiveDimDic.Get(d1, d2, d3, d4, d5);
-                Assert.Equal($"{d1}.{d2}.{d3}.{d4}.{d5}",v);
+                Check.That(v).IsEqualTo($"{d1}.{d2}.{d3}.{d4}.{d5}");
             }
 
             var keys = fiveDimDic.GetKeys();
-            Assert.Equal<int>(3125, keys.Count);
+            Check.That(keys).CountIs(3125);
         }
     }
 }
