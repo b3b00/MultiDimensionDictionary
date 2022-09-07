@@ -1,4 +1,4 @@
-name: .NET Core
+name: build & deploy
 
 on:
   push:
@@ -73,7 +73,7 @@ jobs:
           VERSION_FILE_PATH: ${{env.MAIN_CSPROJ}}
           INCLUDE_SYMBOLS: true
     - name: Create Release
-      if: ${{ success() && matrix.os == 'windows-latest' && steps.publish_nuget.outputs.VERSION != ''  && steps.publish_nuget.outputs.VERSION != null && github.event_name != 'pull_request' && steps.publish_nuget.outputs.PACKAGE_HAS_BEEN_PUSHED}}
+      if: ${{ success() && matrix.os == 'windows-latest' && steps.publish_nuget.outputs.VERSION != ''  && steps.publish_nuget.outputs.VERSION != null && github.event_name != 'pull_request'}}
       id: create_release
       uses: actions/create-release@latest
       env:
