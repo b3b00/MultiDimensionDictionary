@@ -73,9 +73,9 @@ namespace multiDimensionalDictionary
             return ExtensibilityHelper.BuildCheckLink(context);
         }
 
-        public static ICheckLink<ICheck<Multi<K1, K2, K3, K4, K5, K6, K7, K8, K9, K10, V>>>
+        public static ICheckLink<ICheck<MultiDimensionalDictionary<K1, K2, K3, K4, K5, K6, K7, K8, K9, K10, V>>>
             ContainsKey<K1, K2, K3, K4, K5, K6, K7, K8, K9, K10, V>(
-                this ICheck<Multi<K1, K2, K3, K4, K5, K6, K7, K8, K9, K10, V>> context, K1 key1, K2 key2, K3 key3,
+                this ICheck<MultiDimensionalDictionary<K1, K2, K3, K4, K5, K6, K7, K8, K9, K10, V>> context, K1 key1, K2 key2, K3 key3,
                 K4 key4, K5 key5, K6 key6, K7 key7, K8 key8, K9 key9, K10 key10)
         {
             ExtensibilityHelper.BeginCheck(context)

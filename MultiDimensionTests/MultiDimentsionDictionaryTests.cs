@@ -171,8 +171,8 @@ namespace MultiDimensionTests
         [Fact]
         static void Test10()
         {
-            Multi<int, int, int, int, int, int, int, int, int, int, string> fiveDimDic =
-                new Multi<int, int, int, int, int, int, int, int, int, int, string>();
+            MultiDimensionalDictionary<int, int, int, int, int, int, int, int, int, int, string> fiveDimDic =
+                new MultiDimensionalDictionary<int, int, int, int, int, int, int, int, int, int, string>();
             int count = 2;
             for (int k1 = 0; k1 < count; k1++)
             {
@@ -301,8 +301,8 @@ namespace MultiDimensionTests
         [Fact]
         static void Test10Remove()
         {
-            Multi<int, int, int, int, int, int, int, int, int, int, string> tenDimDic =
-                new Multi<int, int, int, int, int, int, int, int, int, int, string>();
+            MultiDimensionalDictionary<int, int, int, int, int, int, int, int, int, int, string> tenDimDic =
+                new MultiDimensionalDictionary<int, int, int, int, int, int, int, int, int, int, string>();
 
             tenDimDic.Put(1, 2, 3, 4, 5,6,7,8,9,10, "10");
             Check.That(tenDimDic).ContainsKey(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
