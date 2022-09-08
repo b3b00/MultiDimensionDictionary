@@ -2,11 +2,12 @@
 
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using multiDimensionalDictionary;
 
 namespace  multiDimensionalDictionary {
 
-
+    [ExcludeFromCodeCoverage]
 public class MultiDimensionalDictionary<K1, K2, K3, K4, K5, K6, K7, K8, K9, V>
     {
         protected ConcurrentDictionary<K1, MultiDimensionalDictionary<K2, K3, K4, K5, K6, K7, K8, K9, V>> Data{ get;set; }
