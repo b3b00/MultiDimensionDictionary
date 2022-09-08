@@ -42,7 +42,7 @@ jobs:
       with:
         testProject: ${{env.TESTS_PROJECT}}
         output: 'lcov.info'
-        threshold: 50
+        threshold: 45
         outputFormat: 'lcov'
         excludes: '[ConsoleTests]*'
     - name: coveralls      
