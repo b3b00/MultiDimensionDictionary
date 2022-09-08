@@ -117,18 +117,29 @@ public class Multi<{GenerateTypeParameters(1, count)}>
 
     public static string GenerateGetKeys(int count)
     {
+
+        var parameterTypes = count == 2 ? "K2" : $"({GenerateTypeParameters(1, count, false)})";
+        
         var get = $@"public List<({GenerateTypeParameters(1, count, false)})> GetKeys()
         {{
-            List<({GenerateTypeParameters(1, count, false)})> keys = new List<({GenerateTypeParameters(1, count, false)})>();
+            var keys = new List<({GenerateTypeParameters(1, count, false)})>();
             foreach (var kvp in Data)
             {{
-                List<({GenerateTypeParameters(2, count, false)})> subkeys = kvp.Value.GetKeys();
+                List<{parameterTypes}> subkeys = kvp.Value.GetKeys();
                 foreach (var subkey in subkeys)
                 {{
         keys.Add((kvp.Key, ";
         for (int i = 1; i < count; i++)
         {
-            get += $"subkey.Item{i}";
+            if (count == 2)
+            {
+                get += "subkey";
+            }
+            else
+            {
+                get += $"subkey.Item{i}";
+            }
+
             if (i < count-1)
             {
                 get += ", ";
