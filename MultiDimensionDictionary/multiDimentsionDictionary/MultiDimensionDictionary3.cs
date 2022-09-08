@@ -16,6 +16,8 @@ namespace multiDimensionalDictionary
 
         public bool ContainsKey(K1 k1) => Data.ContainsKey(k1);
 
+        public bool ContainsKey(K1 k1, K2 k2) => Data.ContainsKey(k1) && Data[k1].ContainsKey(k2);
+        
         public bool ContainsKey(K1 k1, K2 k2, K3 k3) => Data.ContainsKey(k1) && Data[k1].ContainsKey(k2, k3);
 
         public List<(K1, K2, K3)> GetKeys()
