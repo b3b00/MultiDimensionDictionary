@@ -5,7 +5,7 @@ namespace DictionaryGenerator;
 public class Generator
 {
 
-    public static string GenerateTypeParameters(int start, int count, bool withValue = true)
+    private static string GenerateTypeParameters(int start, int count, bool withValue = true)
     {
         StringBuilder builder = new StringBuilder();
         
@@ -25,7 +25,7 @@ public class Generator
         return builder.ToString();
     }
     
-    public static string GenerateParametersDeclaration(int start, int count)
+    private static string GenerateParametersDeclaration(int start, int count)
     {
         StringBuilder builder = new StringBuilder();
 
@@ -41,7 +41,7 @@ public class Generator
         return builder.ToString();
     }
 
-    public static string GenerateParameters(int start, int count, bool withValue = false)
+    private static string GenerateParameters(int start, int count, bool withValue = false)
     {
         StringBuilder builder = new StringBuilder();
 
@@ -61,7 +61,7 @@ public class Generator
         return builder.ToString();
     }
 
-    public static string GenerateUsingsAndNamespace()
+    private static string GenerateUsingsAndNamespace()
     {
         var header = $@"
 
@@ -73,7 +73,7 @@ namespace  multiDimensionalDictionary {{";
         return header;
     }
     
-    public static string GenerateClassDeclarationGenerateHeader(int count)
+    private static string GenerateClassDeclarationGenerateHeader(int count)
     {
         var header = $@"
 
@@ -88,7 +88,7 @@ public class Multi<{GenerateTypeParameters(1, count)}>
         return header;
     }
 
-    public static string GenerateContains(int count)
+    private static string GenerateContains(int count)
     {
         StringBuilder builder = new StringBuilder();
         for (int i = 1; i < count + 1; i++)
@@ -102,7 +102,7 @@ public class Multi<{GenerateTypeParameters(1, count)}>
 
 
 
-    public static string GenerateContainsKey(int count, int level)
+    private static string GenerateContainsKey(int count, int level)
     {
         if (level == 1)
         {
@@ -115,10 +115,10 @@ public class Multi<{GenerateTypeParameters(1, count)}>
         }
     }
 
-    public static string GenerateGetKeys(int count)
+    private static string GenerateGetKeys(int count)
     {
 
-        var parameterTypes = count == 2 ? "K2" : $"({GenerateTypeParameters(1, count, false)})";
+        var parameterTypes = count == 2 ? "K2" : $"({GenerateTypeParameters(2, count, false)})";
         
         var get = $@"public List<({GenerateTypeParameters(1, count, false)})> GetKeys()
         {{
@@ -156,12 +156,12 @@ public class Multi<{GenerateTypeParameters(1, count)}>
     }
 
 
-    public static string GenerateAssert(string type, string name)
+    private static string GenerateAssert(string type, string name)
     {
         return $@"DictionaryAssertions.AssertNotNull<{type}>({name}, ""{name}"");";
     }
     
-    public static string GenerateAsserts(int count, bool withValue = true)
+    private static string GenerateAsserts(int count, bool withValue = true)
     {
         StringBuilder builder = new StringBuilder();
         for (int i = 1; i < count + 1; i++)
@@ -178,7 +178,7 @@ public class Multi<{GenerateTypeParameters(1, count)}>
         return builder.ToString();
     }
     
-    public static string GeneratePut(int count)
+    private static string GeneratePut(int count)
     {
         var put = $@"public void Put({GenerateParametersDeclaration(1, count)}, V value)
         {{
@@ -199,7 +199,7 @@ public class Multi<{GenerateTypeParameters(1, count)}>
             return put;
     }
 
-    public static string GenerateGet(int count, int level)
+    private static string GenerateGet(int count, int level)
     {
         if (level == count)
         {
@@ -209,7 +209,7 @@ public class Multi<{GenerateTypeParameters(1, count)}>
 
             if (Data.TryGetValue(k1, out Multi<{GenerateTypeParameters(2, count, true)}> secondDimensionData))
             {{
-                return secondDimensionData.Get({GenerateParameters(level-1, count, false)});
+                return secondDimensionData.Get({GenerateParameters(2, count, false)});
             }}
 
             throw new KeyNotFoundException();
@@ -227,11 +227,11 @@ public class Multi<{GenerateTypeParameters(1, count)}>
         
         return $@"public Multi<{GenerateTypeParameters(level+1,count,true)}> Get({GenerateParametersDeclaration(1,level)})
             {{
-                return Data[k1].Get({GenerateParameters(level,count-1,false)});
+                return Data[k1].Get({GenerateParameters(2,level,false)});
             }}";
     }
 
-    public static string GenerateGets(int count)
+    private static string GenerateGets(int count)
     {
         StringBuilder builder = new StringBuilder();
         for (int i = 1; i < count + 1; i++)
@@ -250,19 +250,31 @@ public class Multi<{GenerateTypeParameters(1, count)}>
 
         builder.AppendLine(GenerateClassDeclarationGenerateHeader(count))
             .AppendLine()
+            .AppendLine("#region ContainsKey")
             .AppendLine(GenerateContains(count))
+            .AppendLine("#endregion")
             .AppendLine()
+            .AppendLine("#region getKeys")
             .AppendLine(GenerateGetKeys(count))
+            .AppendLine("#endregion")
             .AppendLine()
+            .AppendLine("#region Put")
             .AppendLine(GeneratePut(count))
+            .AppendLine("#endregion")
             .AppendLine()
+            .AppendLine("#region Get")
             .AppendLine(GenerateGets(count))
+            .AppendLine("#endregion")
             .AppendLine("}");
         return builder.ToString();
     }
     
     public static string Generate(int count)
     {
+        if (count <= 1)
+        {
+            throw new InvalidOperationException("NO ! You can't do so !");
+        }
         StringBuilder builder = new StringBuilder();
         builder
             .AppendLine(GenerateUsingsAndNamespace())

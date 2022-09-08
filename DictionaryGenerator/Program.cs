@@ -3,7 +3,7 @@
 using System.Text;
 using DictionaryGenerator;
 
-for (int i = 2; i <= 6; i++)
+for (int i = 2; i <= 10; i++)
 {
 
     string g = Generator.Generate(i);
@@ -11,11 +11,6 @@ for (int i = 2; i <= 6; i++)
     File.WriteAllText(
         $@"C:\Users\olduh\dev\MultiDimensionDictionary\MultiDimensionDictionary\multiDimentsionDictionary\multi{i}.cs", g);
 }
-// g = Generator.GenerateGet(3, 2);
-// Console.WriteLine(g);
-// g = Generator.GenerateGet(3, 3);
-// Console.WriteLine(g);
-
 
 
 
