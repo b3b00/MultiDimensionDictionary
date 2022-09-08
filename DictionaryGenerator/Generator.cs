@@ -265,7 +265,49 @@ public class Multi<{GenerateTypeParameters(1, count)}>
             .AppendLine("#region Get")
             .AppendLine(GenerateGets(count))
             .AppendLine("#endregion")
+            .AppendLine("#region Remove")
+            .AppendLine(GenerateRemoves(count))
+            .AppendLine("#endregion")
+            
             .AppendLine("}");
+        return builder.ToString();
+    }
+
+    public static string GenerateRemove(int count, int level)
+    {
+        if (level == 1)
+        {
+            return @"public new void Remove(K1 k1)
+    {
+        Data.Remove(k1, out var ignore);
+    }";
+        }
+        else
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine($"public void Remove({GenerateParametersDeclaration(1, level)})")
+                .AppendLine("{")
+                .Append("Data[k1]");
+            for (int i = 2; i < level; i++)
+            {
+                builder.Append($".Get(k{i})");
+            }
+
+            builder.AppendLine($".Remove(k{level});")
+                .AppendLine("}");
+            return builder.ToString();
+        }
+    }
+
+    public static string GenerateRemoves(int count)
+     {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 1; i < count + 1; i++)
+        {
+            builder.AppendLine(GenerateRemove(count, i));
+            builder.AppendLine();
+        }
+
         return builder.ToString();
     }
     

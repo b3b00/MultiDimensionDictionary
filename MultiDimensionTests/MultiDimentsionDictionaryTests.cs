@@ -169,6 +169,68 @@ namespace MultiDimensionTests
         }
 
         [Fact]
+        static void Test10()
+        {
+            Multi<int, int, int, int, int, int, int, int, int, int, string> fiveDimDic =
+                new Multi<int, int, int, int, int, int, int, int, int, int, string>();
+            int count = 2;
+            for (int k1 = 0; k1 < count; k1++)
+            {
+                for (int k2 = 0; k2 < count; k2++)
+                {
+                    for (int k3 = 0; k3 < count; k3++)
+                    {
+                        for (int k4 = 0; k4 < count; k4++)
+                        {
+                            for (int k5 = 0; k5 < count; k5++)
+                            {
+                                for (int k6 = 0; k6 < count; k6++)
+                                {
+                                    for (int k7 = 0; k7 < count; k7++)
+                                    {
+                                        for (int k8 = 0; k8 < count; k8++)
+                                        {
+                                            for (int k9 = 0; k9 < count; k9++)
+                                            {
+                                                for (int k10 = 0; k10 < count; k10++)
+                                                {
+                                                    fiveDimDic.Put(k1, k2, k3, k4, k5, k6, k7, k8, k9, k10,
+                                                        $"{k1}.{k2}.{k3}.{k4}.{k5}.{k6}.{k7}.{k8}.{k9}.{k10}");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < 10; i++)
+            {
+                Random rnd = new Random();
+                int d1 = rnd.Next(0, count-1);
+                int d2 = rnd.Next(0, count-1);
+                int d3 = rnd.Next(0, count-1);
+                int d4 = rnd.Next(0, count-1);
+                int d5 = rnd.Next(0, count-1);
+                int d6 = rnd.Next(0, count-1);
+                int d7 = rnd.Next(0, count-1);
+                int d8 = rnd.Next(0, count-1);
+                int d9 = rnd.Next(0, count-1);
+                int d10 = rnd.Next(0, count-1);
+                var v = fiveDimDic.Get(d1, d2, d3, d4, d5, d6, d7, d8, d9, d10);
+                Check.That(v).IsEqualTo($"{d1}.{d2}.{d3}.{d4}.{d5}.{d6}.{d7}.{d8}.{d9}.{d10}");
+            }
+
+            var keys = fiveDimDic.GetKeys();
+            Check.That(keys).CountIs((int)Math.Pow(count, 10));
+        }
+
+
+        [Fact]
         static void Test1Remove()
         {
             MultiDimensionalDictionary<int, string> oneDimDic = new MultiDimensionalDictionary<int, string>();
@@ -234,6 +296,20 @@ namespace MultiDimensionTests
             fiveDimDic.Remove(1, 2, 3, 4, 5);
 
             Check.That(fiveDimDic).Not.ContainsKey(1, 2, 3, 4, 5);
+        }
+        
+        [Fact]
+        static void Test10Remove()
+        {
+            Multi<int, int, int, int, int, int, int, int, int, int, string> tenDimDic =
+                new Multi<int, int, int, int, int, int, int, int, int, int, string>();
+
+            tenDimDic.Put(1, 2, 3, 4, 5,6,7,8,9,10, "10");
+            Check.That(tenDimDic).ContainsKey(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+            tenDimDic.Remove(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+            Check.That(tenDimDic).Not.ContainsKey(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         }
     }
 }
