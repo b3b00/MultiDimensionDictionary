@@ -9,17 +9,19 @@ namespace multiDimensionalDictionary
     {
 
         private TimeSpan ExpirationSpan;
-        protected ConcurrentDictionary<K1, (DateTime date,V value)> Data { get; set; }
+        protected ConcurrentDictionary<K1, (DateTime date, V value)> Data { get; set; }
 
-        
-        public ExpirationalMultiDimensionDictionary(long expiration1MMillis) : this (TimeSpan.FromMilliseconds(expiration1MMillis))
+
+        public ExpirationalMultiDimensionDictionary(long expiration1MMillis) : this(
+            TimeSpan.FromMilliseconds(expiration1MMillis))
         {
-            
+
         }
+
         public ExpirationalMultiDimensionDictionary(TimeSpan expirationSpan)
         {
             ExpirationSpan = expirationSpan;
-            Data = new ConcurrentDictionary<K1, (DateTime,V)>();
+            Data = new ConcurrentDictionary<K1, (DateTime, V)>();
         }
 
         public void Invalidate()
@@ -73,10 +75,10 @@ namespace multiDimensionalDictionary
             Invalidate();
             _Remove(k1);
         }
-        
+
         public void _Remove(K1 k1)
         {
-            (DateTime,V) ignore;
+            (DateTime, V) ignore;
             Data.TryRemove(k1, out ignore);
         }
 
@@ -91,5 +93,5 @@ namespace multiDimensionalDictionary
 
 
 
-   
+
 }

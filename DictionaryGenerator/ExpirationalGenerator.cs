@@ -90,7 +90,7 @@ namespace multiDimensionalDictionary {{";
     private static string GenerateConstructorMillis(int count)
     {
         var builder = new StringBuilder();
-        builder.Append("public ExpirationalMulti(");
+        builder.Append("public ExpirationalMultiDimensionDictionary(");
         for (int i = 1; i <= count; i++)
         {
             builder.Append($"long expiration{i}");
@@ -120,7 +120,7 @@ namespace multiDimensionalDictionary {{";
     private static string GenerateConstructorTimeSpan(int count)
     {
         var builder = new StringBuilder();
-        builder.Append("public ExpirationalMulti(");
+        builder.Append("public ExpirationalMultiDimensionDictionary(");
         for (int i = 1; i <= count; i++)
         {
             builder.Append($"TimeSpan expiration{i}");
@@ -136,6 +136,9 @@ namespace multiDimensionalDictionary {{";
         {
             builder.Append($"ExpirationSpan{i} = expiration{i};");
         }
+
+        builder.AppendLine(
+            $"Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(2, count)}> subData)>();");
         builder.Append("}");
         return builder.ToString();
     }
@@ -152,17 +155,17 @@ namespace multiDimensionalDictionary {{";
     {
         var header = $@"
 
-public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
+public class ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(1, count)}>
     {{
         {GenerateExpirations(count)}
 
         {GenerateConstructors(count)}
 
-        protected ConcurrentDictionary<K1, (DateTime date, ExpirationalMulti<{GenerateTypeParameters(2, count)}> subData)> Data{{ get;set; }}
+        protected ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(2, count)}> subData)> Data{{ get;set; }}
 
-        public ExpirationalMulti() : base()
+        public ExpirationalMultiDimensionDictionary() : base()
         {{
-            Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMulti<{GenerateTypeParameters(2, count)}> subData)>();
+            Data = new ConcurrentDictionary<K1, (DateTime date, ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(2, count)}> subData)>();
         }}
 
         
@@ -191,12 +194,18 @@ public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
     {
         if (level == 1)
         {
-            return "public bool ContainsKey(K1 k1) => Data.ContainsKey(k1);";
+            return @"public bool ContainsKey(K1 k1) {
+Invalidate();
+return Data.ContainsKey(k1);
+}";
         }
         else
         {
             return
-                $"public bool ContainsKey({GenerateParametersDeclaration(1, level)}) => Data.ContainsKey(k1) && Data[k1].subData.ContainsKey({GenerateParameters(2, level)});";
+                $@"public bool ContainsKey({GenerateParametersDeclaration(1, level)}) {{
+Invalidate();
+return  Data.ContainsKey(k1) && Data[k1].subData.ContainsKey({GenerateParameters(2, level)});
+}}";
         }
     }
 
@@ -207,6 +216,7 @@ public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
         
         var get = $@"public List<({GenerateTypeParameters(1, count, false)})> GetKeys()
         {{
+Invalidate();
             var keys = new List<({GenerateTypeParameters(1, count, false)})>();
             foreach (var kvp in Data)
             {{
@@ -283,10 +293,10 @@ public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
     {
         var put = $@"public void Put({GenerateParametersDeclaration(1, count)}, V value)
         {{
-
+Invalidate();
             {GenerateAsserts(count)}
 
-            var secondDimentionData = new ExpirationalMulti<{GenerateTypeParameters(2,count,true)}>({GenerateExpirationParameters(2,count)});
+            var secondDimentionData = new ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(2,count,true)}>({GenerateExpirationParameters(2,count)});
 
             if (Data.ContainsKey(k1))
             {{
@@ -306,6 +316,7 @@ public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
         {
             var get = $@"public V Get({GenerateParametersDeclaration(1, level)})
         {{
+Invalidate();
 {GenerateAsserts(count, false)}
 
             if (Data.TryGetValue(k1, out var secondDimensionData))
@@ -320,13 +331,13 @@ public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
 
         if (level == 1)
         {
-            return $@"public ExpirationalMulti<{GenerateTypeParameters(2,count, true)}> Get(K1 k1)
+            return $@"public ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(2,count, true)}> Get(K1 k1)
             {{
                 return Data[k1].subData;
             }}";
         }
         
-        return $@"public ExpirationalMulti<{GenerateTypeParameters(level+1,count,true)}> Get({GenerateParametersDeclaration(1,level)})
+        return $@"public ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(level+1,count,true)}> Get({GenerateParametersDeclaration(1,level)})
             {{
                 return Data[k1].subData.Get({GenerateParameters(2,level,false)});
             }}";
@@ -380,6 +391,7 @@ public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
         {
             return @"public new void Remove(K1 k1)
     {
+Invalidate();
         Data.Remove(k1, out var ignore);
     }";
         }
@@ -388,6 +400,7 @@ public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
             StringBuilder builder = new StringBuilder();
             builder.AppendLine($"public void Remove({GenerateParametersDeclaration(1, level)})")
                 .AppendLine("{")
+                .AppendLine("Invalidate();")
                 .Append("Data[k1].subData");
             for (int i = 2; i < level; i++)
             {
@@ -420,7 +433,7 @@ public class ExpirationalMulti<{GenerateTypeParameters(1, count)}>
 
 public void _Remove(K1 k1)
         {{
-            (DateTime date, ExpirationalMulti<{GenerateTypeParameters(2,count,true)}> subData) ignore = default;
+            (DateTime date, ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(2,count,true)}> subData) ignore = default;
             Data.TryRemove(k1, out ignore);
         }}
 
