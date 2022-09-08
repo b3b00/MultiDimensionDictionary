@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTests", "ConsoleTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiDimensionTests", "MultiDimensionTests\MultiDimensionTests.csproj", "{4DEEF201-423C-45EF-9FA9-BCF596DC8BCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryGenerator", "DictionaryGenerator\DictionaryGenerator.csproj", "{D0CB6C84-4C66-47F5-98DE-F7CF2ACD1E3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{4DEEF201-423C-45EF-9FA9-BCF596DC8BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DEEF201-423C-45EF-9FA9-BCF596DC8BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DEEF201-423C-45EF-9FA9-BCF596DC8BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0CB6C84-4C66-47F5-98DE-F7CF2ACD1E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0CB6C84-4C66-47F5-98DE-F7CF2ACD1E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0CB6C84-4C66-47F5-98DE-F7CF2ACD1E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0CB6C84-4C66-47F5-98DE-F7CF2ACD1E3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

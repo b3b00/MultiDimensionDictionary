@@ -3,3 +3,5 @@
 **/Bin/*
 **/obj/*
 **/Obj/*
+**/*.user
+**/lcov.info
