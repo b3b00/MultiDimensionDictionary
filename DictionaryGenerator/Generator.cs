@@ -67,6 +67,7 @@ public class Generator
 
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using multiDimensionalDictionary;
 
 namespace  multiDimensionalDictionary {{";
@@ -75,15 +76,16 @@ namespace  multiDimensionalDictionary {{";
     
     private static string GenerateClassDeclarationGenerateHeader(int count)
     {
-        var header = $@"
+        var header = count > 5 ? "[ExcludeFromCodeCoverage]\n": "";
+        header += $@"
 
-public class Multi<{GenerateTypeParameters(1, count)}>
+public class MultiDimensionalDictionary<{GenerateTypeParameters(1, count)}>
     {{
-        protected ConcurrentDictionary<K1, Multi<{GenerateTypeParameters(2, count)}>> Data{{ get;set; }}
+        protected ConcurrentDictionary<K1, MultiDimensionalDictionary<{GenerateTypeParameters(2, count)}>> Data{{ get;set; }}
 
-        public Multi() : base()
+        public MultiDimensionalDictionary() : base()
         {{
-            Data = new ConcurrentDictionary<K1, Multi<{GenerateTypeParameters(2, count)}>>();
+            Data = new ConcurrentDictionary<K1, MultiDimensionalDictionary<{GenerateTypeParameters(2, count)}>>();
         }}";
         return header;
     }
@@ -185,7 +187,7 @@ public class Multi<{GenerateTypeParameters(1, count)}>
 
             {GenerateAsserts(count)}
 
-            var secondDimentionData = new Multi<{GenerateTypeParameters(2,count,true)}>();
+            var secondDimentionData = new MultiDimensionalDictionary<{GenerateTypeParameters(2,count,true)}>();
 
             if (Data.ContainsKey(k1))
             {{
@@ -207,7 +209,7 @@ public class Multi<{GenerateTypeParameters(1, count)}>
         {{
 {GenerateAsserts(count, false)}
 
-            if (Data.TryGetValue(k1, out Multi<{GenerateTypeParameters(2, count, true)}> secondDimensionData))
+            if (Data.TryGetValue(k1, out MultiDimensionalDictionary<{GenerateTypeParameters(2, count, true)}> secondDimensionData))
             {{
                 return secondDimensionData.Get({GenerateParameters(2, count, false)});
             }}
@@ -219,13 +221,13 @@ public class Multi<{GenerateTypeParameters(1, count)}>
 
         if (level == 1)
         {
-            return $@"public Multi<{GenerateTypeParameters(2,count, true)}> Get(K1 k1)
+            return $@"public MultiDimensionalDictionary<{GenerateTypeParameters(2,count, true)}> Get(K1 k1)
             {{
                 return Data[k1];
             }}";
         }
         
-        return $@"public Multi<{GenerateTypeParameters(level+1,count,true)}> Get({GenerateParametersDeclaration(1,level)})
+        return $@"public MultiDimensionalDictionary<{GenerateTypeParameters(level+1,count,true)}> Get({GenerateParametersDeclaration(1,level)})
             {{
                 return Data[k1].Get({GenerateParameters(2,level,false)});
             }}";

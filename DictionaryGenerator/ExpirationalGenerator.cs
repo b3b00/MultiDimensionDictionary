@@ -68,6 +68,7 @@ public class ExpirationalGenerator
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace multiDimensionalDictionary {{";
@@ -153,7 +154,8 @@ namespace multiDimensionalDictionary {{";
     
     private static string GenerateClassDeclarationGenerateHeader(int count)
     {
-        var header = $@"
+        var header = count > 5 ? "[ExcludeFromCodeCoverage]\n": "";
+         header += $@"
 
 public class ExpirationalMultiDimensionDictionary<{GenerateTypeParameters(1, count)}>
     {{
