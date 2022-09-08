@@ -3,12 +3,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace multiDimensionalDictionary
 {
 
-
+    [ExcludeFromCodeCoverage]
     public class ExpirationalMultiDimensionDictionary<K1, K2, K3, K4, K5, K6, V>
     {
         TimeSpan ExpirationSpan1;
